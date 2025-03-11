@@ -33,6 +33,22 @@ send_telegram_message() {
     fi
 }
 
+# 发送 gotify 消息的函数
+send_gotify_message() {
+    # 如果传入了 GOTIFY，发送 Telegram 通知
+    if [ -n "$GOTIFY" ] ; then
+        echo "-----------发送gotify通知-----------------"
+	    local message="$1"
+	    status_code=$(curl -s -o /dev/null -w "%{http_code}" -X POST  "$GOTIFY" -d "title=通知" -d "message=$message" -d "priority=5")
+
+	    # 检查响应
+	    if [ $status_code -eq 200 ]; then
+	        echo "::info::Gotify消息发送成功: $message"
+	    else
+	        echo "::error::Gotify消息发送失败: $status_code"
+	    fi
+    fi
+}
 
 # 检查是否传入了参数
 if [ "$#" -lt 1 ]; then
@@ -78,10 +94,12 @@ for account in $accounts; do
     if sshpass -p "$password" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=60 -o ServerAliveInterval=30 -o ServerAliveCountMax=2 -tt "$username@$ip" "sleep 3; exit"; then
         echo "成功激活 $username@$ip"
 	send_telegram_message "🟢serv00成功激活:$username@$ip"
+ 	send_gotify_message "🟢serv00成功激活:$username@$ip"
  	#send_telegram_message "🟢serv00成功激活:$ip"
     else
         echo "连接激活 $username@$ip 失败"
 	send_telegram_message "🔴serv00激活失败: $username@$ip"
+ 	send_gotify_message "🔴serv00激活失败: $username@$ip"()
 	#send_telegram_message "🔴serv00激活失败:$ip"
     fi
     echo "----------------------------"
