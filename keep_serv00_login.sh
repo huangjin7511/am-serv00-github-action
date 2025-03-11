@@ -99,7 +99,7 @@ for account in $accounts; do
     else
         echo "连接激活 $username@$ip 失败"
 	send_telegram_message "🔴serv00激活失败: $username@$ip"
- 	send_gotify_message "🔴serv00激活失败: $username@$ip"()
+ 	send_gotify_message "🔴serv00激活失败: $username@$ip"
 	#send_telegram_message "🔴serv00激活失败:$ip"
     fi
     echo "----------------------------"
