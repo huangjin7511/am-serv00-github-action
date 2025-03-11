@@ -9,6 +9,7 @@ env:
   SSH_ACCOUNTS: ${{ secrets.SSH_ACCOUNTS }}
   TG_TOKEN: ${{ secrets.TG_TOKEN }}
   CHAT_ID: ${{ secrets.CHAT_ID }}
+  GOTIFY: ${{ secrets.GOTIFY }}
   
 jobs:
   keep_serv00_login:
@@ -26,6 +27,6 @@ jobs:
           echo "$SSH_ACCOUNTS" > accounts.json
           echo "accounts.json 内容："
           chmod +x ./keep_serv00_login.sh 
-          ./keep_serv00_login.sh accounts.json "$TG_TOKEN" "$CHAT_ID"
+          ./keep_serv00_login.sh accounts.json "$TG_TOKEN" "$CHAT_ID" "$GOTIFY"
         env:
           PATH: /usr/bin:$PATH
