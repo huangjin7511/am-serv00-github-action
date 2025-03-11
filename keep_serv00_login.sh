@@ -60,6 +60,7 @@ fi
 accounts_file="$1"
 TG_TOKEN="$2"
 CHAT_ID="$3"
+GOTIFY="$4"
 
 echo "Loading accounts from $accounts_file..."
 accounts=$(jq -c '.[]' "$accounts_file")
